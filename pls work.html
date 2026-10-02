@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barsa Debbarma | Visual Artist Portfolio</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Syne:wght@700;800&display=swap');
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #0b0d19;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        .font-syne {
+            font-family: 'Syne', sans-serif;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        .glass-panel-accent {
+            background: rgba(163, 230, 53, 0.1);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(163, 230, 53, 0.3);
+        }
+
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+
+        /* 3D Wireframe Canvas Container */
+        #interactive-viewport {
+            perspective: 1000px;
+        }
+
+        .cube-3d {
+            width: 140px;
+            height: 140px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.1s ease-out;
+        }
+
+        .cube-face {
+            position: absolute;
+            width: 140px;
+            height: 140px;
+            border: 2px solid #a3e635;
+            background: rgba(163, 230, 53, 0.08);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 14px;
+            color: #a3e635;
+            box-shadow: inset 0 0 15px rgba(163, 230, 53, 0.2);
+        }
+
+        .face-front  { transform: rotateY(  0deg) translateZ(70px); }
+        .face-back   { transform: rotateY(180deg) translateZ(70px); }
+        .face-right  { transform: rotateY( 90deg) translateZ(70px); }
+        .face-left   { transform: rotateY(-90deg) translateZ(70px); }
+        .face-top    { transform: rotateX( 90deg) translateZ(70px); }
+        .face-bottom { transform: rotateX(-90deg) translateZ(70px); }
+    </style>
+</head>
+<body class="bg-[#0b0d19] text-white selection:bg-[#a3e635] selection:text-black min-h-screen">
+
+    <!-- Canvas for 3D Background Effect -->
+    <canvas id="bg-canvas" class="fixed inset-0 w-full h-full z-0 pointer-events-none"></canvas>
+
+    <!-- Header Navigation -->
+    <header class="relative z-10 max-w-7xl mx-auto px-6 py-6 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-lime-400 text-black font-black text-xl font-syne flex items-center justify-center">
+                BD
+            </div>
+            <div>
+                <h1 class="font-syne text-xl md:text-2xl font-extrabold tracking-tight">BARSA DEBBARMA</h1>
+                <p class="text-xs text-lime-400 font-medium uppercase tracking-wider">Visual Artist & 3D Designer</p>
+            </div>
+        </div>
+
+        <nav class="glass-panel p-1.5 rounded-full flex items-center gap-1">
+            <button onclick="switchTab('about')" id="btn-about" class="tab-btn px-4 py-2 rounded-full text-xs font-semibold transition-all bg-lime-400 text-black">About</button>
+            <button onclick="switchTab('experience')" id="btn-experience" class="tab-btn px-4 py-2 rounded-full text-xs font-semibold transition-all text-slate-300 hover:text-white">Experience</button>
+            <button onclick="switchTab('skills')" id="btn-skills" class="tab-btn px-4 py-2 rounded-full text-xs font-semibold transition-all text-slate-300 hover:text-white">Skills</button>
+            <button onclick="switchTab('contact')" id="btn-contact" class="tab-btn px-4 py-2 rounded-full text-xs font-semibold transition-all text-slate-300 hover:text-white">Contact</button>
+        </nav>
+    </header>
+
+    <!-- Main Grid -->
+    <main class="relative z-10 max-w-7xl mx-auto px-6 pt-4 pb-20 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center min-h-[75vh]">
+        
+        <!-- Left Content Side -->
+        <div class="lg:col-span-7 space-y-6">
+            <div class="space-y-4">
+                <h2 class="font-syne text-4xl md:text-6xl font-extrabold leading-none">
+                    Creative <span class="text-lime-400">Visual</span> Artist
+                </h2>
+                <p class="text-slate-300 text-sm md:text-base glass-panel p-5 rounded-2xl border-l-4 border-l-lime-400">
+                    Creative visual artist skilled in video editing, photography, graphic design, and 3D art. Passionate about turning ideas into compelling stories.
+                </p>
+            </div>
+
+            <!-- Tab 1: About -->
+            <div id="tab-about" class="tab-content active glass-panel p-6 rounded-3xl space-y-4">
+                <h3 class="font-syne text-lg font-bold text-lime-400">Education</h3>
+                <div class="bg-slate-900/60 p-4 rounded-xl border border-white/5">
+                    <h4 class="font-bold text-white text-base">Bvoc Animation and Digital Media</h4>
+                    <p class="text-sm text-slate-300">St. Joseph's University (2024 - Present)</p>
+                </div>
+            </div>
+
+            <!-- Tab 2: Experience -->
+            <div id="tab-experience" class="tab-content glass-panel p-6 rounded-3xl space-y-4">
+                <h3 class="font-syne text-lg font-bold text-lime-400">Work Experience</h3>
+                <div class="space-y-3">
+                    <div class="border-l-2 border-lime-400 pl-4 space-y-1">
+                        <h4 class="font-bold text-white">Video Editor Intern</h4>
+                        <p class="text-xs text-lime-400">Two-cent studio | May - July 2026</p>
+                        <p class="text-xs text-slate-300">Worked with Premiere Pro & After Effects.</p>
+                    </div>
+                    <div class="border-l-2 border-slate-700 pl-4 space-y-1">
+                        <h4 class="font-bold text-white">Graphic Design Intern</h4>
+                        <p class="text-xs text-lime-400">Advasi | April - May 2026</p>
+                        <p class="text-xs text-slate-300">Worked on printing design using Figma & Photoshop.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 3: Skills -->
+            <div id="tab-skills" class="tab-content glass-panel p-6 rounded-3xl space-y-4">
+                <h3 class="font-syne text-lg font-bold text-lime-400">Skills</h3>
+                <div class="grid grid-cols-2 gap-3 text-xs">
+                    <div class="p-3 bg-white/5 rounded-xl border border-white/5 font-semibold text-slate-200">Video Editing</div>
+                    <div class="p-3 bg-white/5 rounded-xl border border-white/5 font-semibold text-slate-200">Photography</div>
+                    <div class="p-3 bg-white/5 rounded-xl border border-white/5 font-semibold text-slate-200">Colour Grading</div>
+                    <div class="p-3 bg-white/5 rounded-xl border border-white/5 font-semibold text-slate-200">Motion Design</div>
+                    <div class="p-3 bg-white/5 rounded-xl border border-white/5 font-semibold text-slate-200">Graphic Design</div>
+                    <div class="p-3 bg-white/5 rounded-xl border border-white/5 font-semibold text-slate-200">3D Design</div>
+                    <div class="p-3 bg-white/5 rounded-xl border border-white/5 font-semibold text-slate-200">Figma</div>
+                    <div class="p-3 bg-white/5 rounded-xl border border-white/5 font-semibold text-slate-200">Photoshop</div>
+                </div>
+            </div>
+
+            <!-- Tab 4: Contact -->
+            <div id="tab-contact" class="tab-content glass-panel p-6 rounded-3xl space-y-4">
+                <h3 class="font-syne text-lg font-bold text-lime-400">Contact</h3>
+                <div class="space-y-3 text-xs">
+                    <div class="p-3 bg-slate-900 rounded-xl flex justify-between items-center">
+                        <span>debbarmabarsa5@gmail.com</span>
+                        <button onclick="navigator.clipboard.writeText('debbarmabarsa5@gmail.com')" class="bg-lime-400 text-black px-3 py-1 rounded font-bold">Copy</button>
+                    </div>
+                    <div class="p-3 bg-slate-900 rounded-xl flex justify-between items-center">
+                        <span>8798832071</span>
+                        <button onclick="navigator.clipboard.writeText('8798832071')" class="bg-lime-400 text-black px-3 py-1 rounded font-bold">Copy</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Side: Dedicated 3D Interactive Model Area -->
+        <div class="lg:col-span-5 flex flex-col items-center justify-center p-8 glass-panel-accent rounded-3xl border border-lime-400/30 text-center relative min-h-[360px]" id="interactive-viewport">
+            <div class="absolute top-4 left-4 text-xs font-mono text-lime-400 uppercase tracking-widest">Interactive 3D Object</div>
+            
+            <!-- 3D Cube Viewport -->
+            <div class="cube-3d my-8" id="cube">
+                <div class="cube-face face-front">3D ART</div>
+                <div class="cube-face face-back">DESIGN</div>
+                <div class="cube-face face-right">MOTION</div>
+                <div class="cube-face face-left">BARSA</div>
+                <div class="cube-face face-top">ST. JOSEPH</div>
+                <div class="cube-face face-bottom">EDITING</div>
+            </div>
+
+            <p class="text-xs text-slate-300 font-medium">Move your cursor / touch around to rotate the 3D model</p>
+        </div>
+    </main>
+
+    <script>
+        // Tab switching logic
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.className = "tab-btn px-4 py-2 rounded-full text-xs font-semibold transition-all text-slate-300 hover:text-white";
+            });
+
+            document.getElementById('tab-' + tabId).classList.add('active');
+            document.getElementById('btn-' + tabId).className = "tab-btn px-4 py-2 rounded-full text-xs font-semibold transition-all bg-lime-400 text-black";
+        }
+
+        // 3D Object Mouse Interaction
+        const cube = document.getElementById('cube');
+        let rx = 20, ry = 20;
+
+        document.addEventListener('mousemove', (e) => {
+            const x = (e.clientX / window.innerWidth - 0.5) * 2;
+            const y = (e.clientY / window.innerHeight - 0.5) * 2;
+            
+            rx = y * -45;
+            ry = x * 45;
+            
+            cube.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
+        });
+
+        // Background Particle Canvas
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        for (let i = 0; i < 40; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                size: Math.random() * 2 + 1,
+                speedX: (Math.random() - 0.5) * 0.5,
+                speedY: (Math.random() - 0.5) * 0.5
+            });
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = 'rgba(163, 230, 53, 0.4)';
+            
+            particles.forEach(p => {
+                p.x += p.speedX;
+                p.y += p.speedY;
+
+                if (p.x < 0 || p.x > canvas.width) p.speedX *= -1;
+                if (p.y < 0 || p.y > canvas.height) p.speedY *= -1;
+
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fill();
+            });
+
+            requestAnimationFrame(animate);
+        }
+        animate();
+    </script>
+</body>
+</html>
